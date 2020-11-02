@@ -400,6 +400,9 @@ public:
     void stepOverDebug();
     void stepOutDebug();
 
+    /*Функция добавления для отладки per_reg*/
+    void requestPerReg(const QString str);
+
     void addBreakpoint(const BreakpointDescription &config);
     void updateBreakpoint(int index, const BreakpointDescription &config);
     void toggleBreakpoint(RVA addr);
@@ -706,6 +709,8 @@ signals:
     void newDebugMessage(const QString &msg);
 
     void showMemoryWidgetRequested();
+
+    void RequestDataToQPer(const QString &str); 
 
 private:
     QString notes;

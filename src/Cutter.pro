@@ -444,7 +444,9 @@ SOURCES += \
     widgets/CallGraph.cpp \
     widgets/AddressableDockWidget.cpp \
     dialogs/preferences/AnalOptionsWidget.cpp \
-    common/DecompilerHighlighter.cpp
+    common/DecompilerHighlighter.cpp \
+    widgets/QRegWidget.cpp \
+    dialogs/AddNewPer.cpp
 
 GRAPHVIZ_SOURCES = \
     widgets/GraphvizLayout.cpp
@@ -604,7 +606,9 @@ HEADERS  += \
     widgets/CallGraph.h \
     widgets/AddressableDockWidget.h \
     dialogs/preferences/AnalOptionsWidget.h \
-    common/DecompilerHighlighter.h
+    common/DecompilerHighlighter.h \
+    widgets/QRegWidget.h \
+    dialogs/AddNewPer.h
 
 GRAPHVIZ_HEADERS = widgets/GraphvizLayout.h
 
@@ -673,7 +677,9 @@ FORMS    += \
     widgets/ListDockWidget.ui \
     dialogs/LayoutManager.ui \
     widgets/R2GraphWidget.ui \
-    dialogs/preferences/AnalOptionsWidget.ui
+    dialogs/preferences/AnalOptionsWidget.ui \
+    widgets/QRegWidget.ui \
+    dialogs/AddNewPer.ui
 
 RESOURCES += \
     resources.qrc \

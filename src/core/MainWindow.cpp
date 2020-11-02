@@ -73,6 +73,8 @@
 #include "widgets/R2GraphWidget.h"
 #include "widgets/CallGraph.h"
 
+#include "widgets/QRegWidget.h"
+
 // Qt Headers
 #include <QApplication>
 #include <QComboBox>
@@ -351,7 +353,7 @@ void MainWindow::initDocks()
 {
     dockWidgets.reserve(20);
     consoleDock = new ConsoleWidget(this);
-
+    
     overviewDock = new OverviewWidget(this);
     overviewDock->hide();
     actionOverview = overviewDock->toggleViewAction();
@@ -367,6 +369,8 @@ void MainWindow::initDocks()
     searchDock = new SearchWidget(this);
     commentsDock = new CommentsWidget(this);
     stringsDock = new StringsWidget(this);
+
+    qregDock = new QRegWidget(this);
 
     QList<CutterDockWidget *> debugDocks = {
         stackDock = new StackWidget(this),
@@ -433,6 +437,13 @@ void MainWindow::initDocks()
     ui->menuWindows->addActions(makeActionList(windowDocks2));
     ui->menuAddInfoWidgets->addActions(makeActionList(infoDocks));
     ui->menuAddDebugWidgets->addActions(makeActionList(debugDocks));
+
+
+    QList<CutterDockWidget *> windowDocks3 = {
+        qregDock,
+    };
+
+    ui->menuQEMU->addActions(makeActionList(windowDocks3));
 
     auto uniqueDocks = windowDocks + windowDocks2 + infoDocks + debugDocks;
     for (auto dock : uniqueDocks) {
@@ -853,6 +864,10 @@ void MainWindow::restoreDocks()
     tabifyDockWidget(dashboardDock, r2GraphDock);
     tabifyDockWidget(dashboardDock, callGraphDock);
     tabifyDockWidget(dashboardDock, globalCallGraphDock);
+
+    tabifyDockWidget(dashboardDock, qregDock);
+
+
     for (const auto &it : dockWidgets) {
         // Check whether or not current widgets is graph, hexdump or disasm
         if (isExtraMemoryWidget(it)) {

@@ -55,6 +55,8 @@ class OverviewWidget;
 class R2GraphWidget;
 class CallGraphWidget;
 
+class QRegWidget;
+
 namespace Ui {
 class MainWindow;
 }
@@ -272,6 +274,9 @@ private:
     R2GraphWidget      *r2GraphDock = nullptr;
     CallGraphWidget    *callGraphDock = nullptr;
     CallGraphWidget    *globalCallGraphDock = nullptr;
+
+
+    QRegWidget         *qregDock = nullptr;
 
     QMenu *disassemblyContextMenuExtensions = nullptr;
     QMenu *addressableContextMenuExtensions = nullptr;

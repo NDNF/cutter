@@ -2051,6 +2051,31 @@ void CutterCore::stepOutDebug()
     debugTask->startTask();
 }
 
+void CutterCore::requestPerReg(const QString str)
+{
+    if (!currentlyDebugging) {
+        /*добавить сигнал об ошибке*/
+        return;
+    }
+    if (!asyncCmdEsil(str, debugTask)) {
+        /*добавить сигнал об ошибке*/
+        return;
+    }
+
+    connect(debugTask.data(), &R2Task::finished, this, [this] () {
+
+        qDebug() <<debugTask.data()->getResult();
+        /*сигнал с возвращёнными данными*/
+        debugTask.clear();
+        syncAndSeekProgramCounter();
+        emit debugTaskStateChanged();
+    });
+
+    debugTask->startTask();
+
+    qDebug() << "CUTTER: " << str;
+}
+
 QStringList CutterCore::getDebugPlugins()
 {
     QStringList plugins;
