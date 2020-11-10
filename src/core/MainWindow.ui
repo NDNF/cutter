@@ -53,8 +53,8 @@
      <rect>
       <x>2024</x>
       <y>127</y>
-      <width>151</width>
-      <height>312</height>
+      <width>225</width>
+      <height>337</height>
      </rect>
     </property>
     <property name="title">
@@ -105,6 +105,11 @@
      <addaction name="separator"/>
      <addaction name="actionZoomReset"/>
     </widget>
+    <widget class="QMenu" name="menuLayouts">
+     <property name="title">
+      <string>Layouts</string>
+     </property>
+    </widget>
     <addaction name="actionRefresh_contents"/>
     <addaction name="separator"/>
     <addaction name="actionDefault"/>
@@ -118,11 +123,6 @@
     <addaction name="separator"/>
     <addaction name="actionManageLayouts"/>
     <addaction name="actionSaveLayout"/>
-    <widget class="QMenu" name="menuLayouts">
-     <property name="title">
-      <string>Layouts</string>
-     </property>
-    </widget>
     <addaction name="menuLayouts"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -137,7 +137,6 @@
     <property name="title">
      <string>Edit</string>
     </property>
-    <addaction name="actionSearch"/>
     <addaction name="actionBackward"/>
     <addaction name="actionForward"/>
     <addaction name="separator"/>

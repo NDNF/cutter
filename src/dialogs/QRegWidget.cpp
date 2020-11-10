@@ -36,5 +36,4 @@ void QRegWidget::addNewReg()
 
     RegWindow->show();
     /*всплывающее окно с добавлением правила*/
-    qDebug() << "I'm here";
 }

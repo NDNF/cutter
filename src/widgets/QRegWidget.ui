@@ -16,18 +16,7 @@
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QTreeWidget" name="Tree">
-      <column>
-       <property name="text">
-        <string>dasdasdasdas</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>dsadasdas</string>
-       </property>
-      </column>
-     </widget>
+     <widget class="QTreeWidget" name="Tree"/>
     </item>
     <item row="1" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">

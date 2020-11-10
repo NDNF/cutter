@@ -401,7 +401,7 @@ public:
     void stepOutDebug();
 
     /*Функция добавления для отладки per_reg*/
-    void requestPerReg(const QString str);
+    void requestPerReg(const QString str, QTreeWidgetItem *item);
 
     void addBreakpoint(const BreakpointDescription &config);
     void updateBreakpoint(int index, const BreakpointDescription &config);
@@ -710,7 +710,7 @@ signals:
 
     void showMemoryWidgetRequested();
 
-    void RequestDataToQPer(const QString &str); 
+    void requestDataToQPer(QTreeWidgetItem *item, const QString &path, const QString &str);
 
 private:
     QString notes;

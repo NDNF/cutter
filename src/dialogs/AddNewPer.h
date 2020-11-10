@@ -2,6 +2,7 @@
 #define ADDNEWPER_H
 
 #include <QDialog>
+#include <QTreeWidget>
 
 namespace Ui {
 class AddNewPer;
@@ -22,7 +23,7 @@ private slots:
     void addNewPerAddTable();
 
 signals:
-    void sendCmd(const QString cmd);
+    void sendCmd(const QString str, QTreeWidgetItem *item);
 };
 
 #endif // ADDNEWPER_H

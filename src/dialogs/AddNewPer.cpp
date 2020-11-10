@@ -25,10 +25,9 @@ void AddNewPer::addNewPerAddTable()
     if (ui->RegName->text().isEmpty()) {
         QMessageBox::critical(this, "Error", "Entered name of register");
     } else {
-        QString command = "=!monitor per_reg " + ui->RegName->text();
-        /*Выполнить команду, отправив ее через консоль послав сигнал???*/
-        qDebug() << command;
-        emit sendCmd(command);
+        QString command = ui->RegName->text();
+        /*send cmd to terminal*/
+        emit sendCmd(command, nullptr);
         this->close();
     }
 }

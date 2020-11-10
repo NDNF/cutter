@@ -203,6 +203,9 @@ void MainWindow::initUI()
     connect(core, &CutterCore::showMemoryWidgetRequested,
             this, static_cast<void(MainWindow::*)()>(&MainWindow::showMemoryWidget));
 
+    connect(core, &CutterCore::requestDataToQPer,
+            this->qregDock, &QRegWidget::getDataRequest);
+
     updateTasksIndicator();
     connect(core->getAsyncTaskManager(), &AsyncTaskManager::tasksChanged, this,
             &MainWindow::updateTasksIndicator);
@@ -353,7 +356,7 @@ void MainWindow::initDocks()
 {
     dockWidgets.reserve(20);
     consoleDock = new ConsoleWidget(this);
-    
+
     overviewDock = new OverviewWidget(this);
     overviewDock->hide();
     actionOverview = overviewDock->toggleViewAction();

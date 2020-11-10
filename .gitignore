@@ -90,3 +90,5 @@ src/out
 
 # astyle backup .orig files
 *.orig
+src/dialogs/AddNewPer.ui
+src/dialogs/RemoteDebugDialog.ui
