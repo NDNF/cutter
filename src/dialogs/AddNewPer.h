@@ -13,11 +13,12 @@ class AddNewPer : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddNewPer(QWidget *parent = 0);
+    explicit AddNewPer(QWidget *parent = 0, const QString cmd = "");
     ~AddNewPer();
 
 private:
     Ui::AddNewPer *ui;
+    QString text;
 
 private slots:
     void addNewPerAddTable();

@@ -8,6 +8,7 @@
 #include <QSortFilterProxyModel>
 #include <memory>
 #include <AddNewPer.h>
+#include <Peripheral.h>
 
 class MainWindow;
 class QTreeWidgetItem;
@@ -32,6 +33,7 @@ public slots:
 private slots:
     void addNewReg();
     void deleteReg();
+    void showPeripherals();
     void loadRegs(QTreeWidgetItem *item);
 
 private:

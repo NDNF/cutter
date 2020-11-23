@@ -22,6 +22,7 @@ QRegWidget::QRegWidget(MainWindow *main) :
     ui->Tree->header()->setSectionResizeMode(2, QHeaderView::Stretch);
     connect(ui->Add, &QPushButton::clicked, this, &QRegWidget::addNewReg);
     connect(ui->Delete, &QPushButton::clicked, this, &QRegWidget::deleteReg);
+    connect(ui->Per, &QPushButton::clicked, this, &QRegWidget::showPeripherals);
     connect(ui->Tree, &QTreeWidget::itemExpanded, this, &QRegWidget::loadRegs);
     connect(this, &QRegWidget::getRegs, Core(), &CutterCore::requestPerReg);
     connect(Core(), &CutterCore::needUpdateQPerReg, this, &QRegWidget::update);
@@ -34,7 +35,6 @@ void QRegWidget::addNewReg()
     connect(RegWindow, &AddNewPer::sendCmd, Core(), &CutterCore::requestPerReg);
 
     RegWindow->show();
-    /*всплывающее окно с добавлением правила*/
 }
 
 void QRegWidget::deleteReg()
@@ -49,6 +49,15 @@ void QRegWidget::deleteReg()
         return;
     }
     delete curr.first();
+}
+
+void QRegWidget::showPeripherals()
+{
+    Peripheral *PerWindow = new Peripheral(this);
+    connect(PerWindow, &Peripheral::loadList, Core(), &CutterCore::requestListPeripherals);
+    connect(Core(), &CutterCore::requestDataListPeripherals, PerWindow, &Peripheral::getListPeripherals);
+    PerWindow->loadList();
+    PerWindow->show();
 }
 
 void QRegWidget::loadRegs(QTreeWidgetItem *item)
@@ -171,7 +180,7 @@ QTreeWidgetItem* QRegWidget::setTreeHead(QString path, QString type, QString nam
 void QRegWidget::getDataRequest(QTreeWidgetItem *item, const QString &path, const QString &str)
 {
     QRegExp rx("\r\n");
-    QStringList rows = str.split(rx);
+    QStringList rows = str.split(rx, QString::SkipEmptyParts);
 
     if (!item && rows[0].indexOf("<ERROR>") != -1) {
         QMessageBox::critical(this, "Error", "Request to a non-existent register was received");
@@ -179,11 +188,8 @@ void QRegWidget::getDataRequest(QTreeWidgetItem *item, const QString &path, cons
     }
 
     QRegExp rx1("/");
-    QStringList headArgs = path.split(rx1);
+    QStringList headArgs = path.split(rx1, QString::SkipEmptyParts);
     QString headName = headArgs.last();
-    if (headName.isEmpty()) {
-        headName = headArgs[headArgs.length()-2];
-    }
 
     if (!item) {
         item = setTreeHead(path, "", headName, "");

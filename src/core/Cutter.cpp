@@ -2091,6 +2091,33 @@ void CutterCore::requestPerReg(const QString str, QTreeWidgetItem *item)
     task->startTask();
 }
 
+void CutterCore::requestListPeripherals()
+{
+    QSharedPointer<R2Task> task;
+    QString request = "=!monitor peripherals";
+    if (!currentlyDebugging) {
+        /*добавить сигнал об ошибке*/
+        return;
+    }
+    if (!asyncCmdEsil(request, task)) {
+        /*добавить сигнал об ошибке*/
+        return;
+    }
+    QReqTask.push_back(task);
+
+    for(QSharedPointer<R2Task> it: QReqTask) {
+        connect(it.data(), &R2Task::finished, this, [this, it] () {
+            if (QReqTask.indexOf(it) != -1) {
+                QString ans = it.data()->getResult();
+                emit requestDataListPeripherals(ans);
+                QReqTask.removeOne(it);
+            }
+        });
+    }
+
+    task->startTask();
+}
+
 QStringList CutterCore::getDebugPlugins()
 {
     QStringList plugins;

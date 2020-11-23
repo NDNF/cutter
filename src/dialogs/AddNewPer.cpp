@@ -4,15 +4,14 @@
 #include <QDebug>
 #include <QMessageBox>
 
-AddNewPer::AddNewPer(QWidget *parent) :
-    QDialog(parent),
+AddNewPer::AddNewPer(QWidget *parent, const QString cmd) :
+    QDialog(parent), text(cmd),
     ui(new Ui::AddNewPer)
 {
     ui->setupUi(this);
-
+    ui->RegName->setText(text);
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &AddNewPer::addNewPerAddTable);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &AddNewPer::close);
-
 }
 
 AddNewPer::~AddNewPer()

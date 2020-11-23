@@ -14,9 +14,14 @@ class Peripheral : public QDialog
 public:
     explicit Peripheral(QWidget *parent = 0);
     ~Peripheral();
+public slots:
+    void getListPeripherals(const QString &str);
+signals:
+    void loadList();
 
 private:
     Ui::Peripheral *ui;
+    void showAddPerReg();
 };
 
 #endif // PERIPHERAL_H

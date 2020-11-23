@@ -446,7 +446,8 @@ SOURCES += \
     dialogs/preferences/AnalOptionsWidget.cpp \
     common/DecompilerHighlighter.cpp \
     widgets/QRegWidget.cpp \
-    dialogs/AddNewPer.cpp
+    dialogs/AddNewPer.cpp \
+    dialogs/Peripheral.cpp
 
 GRAPHVIZ_SOURCES = \
     widgets/GraphvizLayout.cpp
@@ -608,7 +609,8 @@ HEADERS  += \
     dialogs/preferences/AnalOptionsWidget.h \
     common/DecompilerHighlighter.h \
     widgets/QRegWidget.h \
-    dialogs/AddNewPer.h
+    dialogs/AddNewPer.h \
+    dialogs/Peripheral.h
 
 GRAPHVIZ_HEADERS = widgets/GraphvizLayout.h
 
@@ -679,7 +681,8 @@ FORMS    += \
     widgets/R2GraphWidget.ui \
     dialogs/preferences/AnalOptionsWidget.ui \
     widgets/QRegWidget.ui \
-    dialogs/AddNewPer.ui
+    dialogs/AddNewPer.ui \
+    dialogs/Peripheral.ui
 
 RESOURCES += \
     resources.qrc \
