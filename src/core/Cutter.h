@@ -712,6 +712,8 @@ signals:
 
     void requestDataToQPer(QTreeWidgetItem *item, const QString &path, const QString &str);
 
+    void needUpdateQPerReg();
+
 private:
     QString notes;
 
@@ -736,6 +738,7 @@ private:
     BasicInstructionHighlighter biHighlighter;
 
     QSharedPointer<R2Task> debugTask;
+    QVector<QSharedPointer<R2Task>> QReqTask;
     R2TaskDialog *debugTaskDialog;
     
     QVector<QString> getCutterRCFilePaths() const;

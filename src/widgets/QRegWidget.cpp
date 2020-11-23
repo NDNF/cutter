@@ -24,7 +24,7 @@ QRegWidget::QRegWidget(MainWindow *main) :
     connect(ui->Delete, &QPushButton::clicked, this, &QRegWidget::deleteReg);
     connect(ui->Tree, &QTreeWidget::itemExpanded, this, &QRegWidget::loadRegs);
     connect(this, &QRegWidget::getRegs, Core(), &CutterCore::requestPerReg);
-
+    connect(Core(), &CutterCore::needUpdateQPerReg, this, &QRegWidget::update);
 }
 QRegWidget::~QRegWidget() {}
 
@@ -53,7 +53,6 @@ void QRegWidget::deleteReg()
 
 void QRegWidget::loadRegs(QTreeWidgetItem *item)
 {
-    QString s =  item->text(3);
     emit getRegs(item->text(3), item);
 }
 
@@ -142,6 +141,16 @@ void QRegWidget::getParams(QString str, QString &name, QString &type, QString &v
     return;
 }
 
+bool QRegWidget::is_update(QVector<QTreeWidgetItem *> v, QTreeWidgetItem *itm)
+{
+    for(auto it: v) {
+        if (it == itm) {
+            return true;
+        }
+    }
+    return false;
+}
+
 QTreeWidgetItem* QRegWidget::setTreeHead(QString path, QString type, QString name, QString value)
 {
     auto count = ui->Tree->topLevelItemCount();
@@ -164,7 +173,7 @@ void QRegWidget::getDataRequest(QTreeWidgetItem *item, const QString &path, cons
     QRegExp rx("\r\n");
     QStringList rows = str.split(rx);
 
-    if (rows[0].indexOf("<ERROR>") != -1) {
+    if (!item && rows[0].indexOf("<ERROR>") != -1) {
         QMessageBox::critical(this, "Error", "Request to a non-existent register was received");
         return;
     }
@@ -193,6 +202,20 @@ void QRegWidget::getDataRequest(QTreeWidgetItem *item, const QString &path, cons
             setTreeChild(path, type, name, value, item);
         }
     }
-    this->raise();
     return;
+}
+
+void QRegWidget::update()
+{
+    QVector<QTreeWidgetItem *> used;
+    QTreeWidgetItemIterator it(ui->Tree);
+    while (*it) {
+        auto item = (*it);
+        auto parent = item->parent();
+        if (parent && !is_update(used, parent) && parent->isExpanded()) {
+            emit getRegs(parent->text(3), parent);
+            used.push_back(parent);
+        }
+        ++it;
+    }
 }

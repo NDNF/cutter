@@ -1607,6 +1607,7 @@ void CutterCore::setCurrentDebugThread(int tid)
         syncAndSeekProgramCounter();
         emit switchedThread();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTask->startTask();
@@ -1628,6 +1629,7 @@ void CutterCore::setCurrentDebugProcess(int pid)
         syncAndSeekProgramCounter();
         emit switchedProcess();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTask->startTask();
@@ -1663,6 +1665,7 @@ void CutterCore::startDebug()
         emit codeRebased();
         emit stackChanged();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTaskDialog = new R2TaskDialog(debugTask);
@@ -1706,6 +1709,7 @@ void CutterCore::startEmulation()
         emit codeRebased();
         emit refreshCodeViews();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTaskDialog = new R2TaskDialog(debugTask);
@@ -1801,6 +1805,7 @@ void CutterCore::attachDebug(int pid)
 
         emit codeRebased();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTaskDialog = new R2TaskDialog(debugTask);
@@ -1888,11 +1893,13 @@ void CutterCore::continueDebug()
 
     emit debugTaskStateChanged();
     connect(debugTask.data(), &R2Task::finished, this, [this] () {
+        QString ans = debugTask.data()->getResult();
         debugTask.clear();
         syncAndSeekProgramCounter();
         emit registersChanged();
         emit refreshCodeViews();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTask->startTask();
@@ -1922,6 +1929,7 @@ void CutterCore::continueUntilDebug(QString offset)
         emit stackChanged();
         emit refreshCodeViews();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTask->startTask();
@@ -1948,6 +1956,7 @@ void CutterCore::continueUntilCall()
         debugTask.clear();
         syncAndSeekProgramCounter();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTask->startTask();
@@ -1974,6 +1983,7 @@ void CutterCore::continueUntilSyscall()
         debugTask.clear();
         syncAndSeekProgramCounter();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTask->startTask();
@@ -2000,6 +2010,7 @@ void CutterCore::stepDebug()
         debugTask.clear();
         syncAndSeekProgramCounter();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTask->startTask();
@@ -2026,6 +2037,7 @@ void CutterCore::stepOverDebug()
         debugTask.clear();
         syncAndSeekProgramCounter();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTask->startTask();
@@ -2046,6 +2058,7 @@ void CutterCore::stepOutDebug()
         debugTask.clear();
         syncAndSeekProgramCounter();
         emit debugTaskStateChanged();
+        emit needUpdateQPerReg();
     });
 
     debugTask->startTask();
@@ -2053,23 +2066,29 @@ void CutterCore::stepOutDebug()
 
 void CutterCore::requestPerReg(const QString str, QTreeWidgetItem *item)
 {
+    QSharedPointer<R2Task> task;
     QString request = "=!monitor per_reg " +  str;
     if (!currentlyDebugging) {
         /*добавить сигнал об ошибке*/
         return;
     }
-    if (!asyncCmdEsil(request, debugTask)) {
+    if (!asyncCmdEsil(request, task)) {
         /*добавить сигнал об ошибке*/
         return;
     }
+    QReqTask.push_back(task);
 
-    connect(debugTask.data(), &R2Task::finished, this, [this, str, item] () {
-        qDebug() <<debugTask.data()->getResult();
-        emit requestDataToQPer(item, str, debugTask.data()->getResult());
-        debugTask.clear();
-    });
+    for(QSharedPointer<R2Task> it: QReqTask) {
+        connect(it.data(), &R2Task::finished, this, [this, it, str, item] () {
+            if (QReqTask.indexOf(it) != -1) {
+                QString ans = it.data()->getResult();
+                emit requestDataToQPer(item, str, ans);
+                QReqTask.removeOne(it);
+            }
+        });
+    }
 
-    debugTask->startTask();
+    task->startTask();
 }
 
 QStringList CutterCore::getDebugPlugins()

@@ -27,6 +27,7 @@ public:
 
 public slots:
     void getDataRequest(QTreeWidgetItem *item, const QString &path, const QString &str);
+    void update();
 
 private slots:
     void addNewReg();
@@ -41,6 +42,7 @@ private:
     void updateTreeChild(QString path, QString type, QString name, QString value, QTreeWidgetItem *item);
     QString createPath(QString path, QString name);
     void getParams(QString str, QString &name,  QString &type,  QString &value);
+    bool is_update(QVector<QTreeWidgetItem *> v, QTreeWidgetItem* itm);
 signals:
     void getRegs(const QString cmd, QTreeWidgetItem *item);
 };
