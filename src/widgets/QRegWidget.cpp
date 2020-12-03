@@ -108,7 +108,7 @@ void QRegWidget::updateTreeChild(QString path, QString type, QString name, QStri
 QString QRegWidget::createPath(QString path, QString name)
 {
     QString res;
-    QRegExp rx("/");
+    QRegExp rx("\\");
     QStringList splitPath = path.split(rx, QString::SkipEmptyParts);
 
     /*situation when tmp and tmp[i] */
@@ -122,7 +122,7 @@ QString QRegWidget::createPath(QString path, QString name)
     }
 
     for(auto it = splitPath.begin(); it != end; it++) {
-        res += *it + "/";
+        res += *it + "\\";
     }
     res += name;
     return res;
@@ -179,6 +179,10 @@ QTreeWidgetItem* QRegWidget::setTreeHead(QString path, QString type, QString nam
 
 void QRegWidget::getDataRequest(QTreeWidgetItem *item, const QString &path, const QString &str)
 {
+    if (str.isEmpty()) {
+        QMessageBox::critical(this, "Error", "Entered name of register");
+        return;
+    }
     QRegExp rx("\r\n");
     QStringList rows = str.split(rx, QString::SkipEmptyParts);
 
@@ -187,7 +191,7 @@ void QRegWidget::getDataRequest(QTreeWidgetItem *item, const QString &path, cons
         return;
     }
 
-    QRegExp rx1("/");
+    QRegExp rx1("\\");
     QStringList headArgs = path.split(rx1, QString::SkipEmptyParts);
     QString headName = headArgs.last();
 
@@ -199,7 +203,7 @@ void QRegWidget::getDataRequest(QTreeWidgetItem *item, const QString &path, cons
     }
 
     int ind = 0;
-    for(auto it = rows.begin(); it != rows.end()-1; it++, ind++) {
+    for (auto it = rows.begin(); it != rows.end(); it++, ind++) {
         QString name, type, value = "";
         getParams(*it,name,type,value);
         if (item->child(ind)) {

@@ -36,6 +36,10 @@ void Peripheral::getListPeripherals(const QString &str)
 
 void Peripheral::showAddPerReg()
 {
+    if (ui->List->selectedItems().isEmpty()) {
+        QMessageBox::critical(this, "Error", "Selected some peripheral!");
+        return;
+    }
     AddNewPer *RegWindow = new AddNewPer(this, ui->List->currentItem()->text());
     connect(RegWindow, &AddNewPer::sendCmd, Core(), &CutterCore::requestPerReg);
     RegWindow->show();
