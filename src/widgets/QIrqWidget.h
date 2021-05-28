@@ -26,7 +26,7 @@ private slots:
 
 private:
     Ui::QIrqWidget *ui;
-    void setTreeItem(QString parentDev, QString callDev, QString number, QString level);
+    void setTreeItem(QString targetFunction, QString callFunction, QString number, QString level);
 };
 
 #endif // QIRQWIDGET_H

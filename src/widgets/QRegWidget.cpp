@@ -9,10 +9,6 @@ QRegWidget::QRegWidget(MainWindow *main) :
     ui(new Ui::QRegWidget)
 {
     ui->setupUi(this);
-    //ui->tableWidget->setColumnCount(3);
-    //ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Type" << "Name" << "Value");
-    //ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
     ui->Tree->setColumnCount(4);
     ui->Tree->setHeaderLabels(QStringList() << "Name" << "Type" << "Value");
     ui->Tree->header()->setStretchLastSection(false);
@@ -107,25 +103,13 @@ void QRegWidget::updateTreeChild(QString path, QString type, QString name, QStri
 
 QString QRegWidget::createPath(QString path, QString name)
 {
-    QString res;
-    QRegExp rx("\\");
-    QStringList splitPath = path.split(rx, QString::SkipEmptyParts);
-
-    /*situation when tmp and tmp[i] */
-
     int ind = name.indexOf("[");
-
-    auto end = splitPath.end();
-
-    if(splitPath.last().length() == ind) {
-        end -= 1;
+    if (ind < 0) {
+        return path + "\\" + name;
     }
-
-    for(auto it = splitPath.begin(); it != end; it++) {
-        res += *it + "\\";
-    }
-    res += name;
-    return res;
+    /*situation when tmp and tmp[i] */
+    path += name.mid(ind);
+    return path;
 }
 
 void QRegWidget::getParams(QString str, QString &name, QString &type, QString &value)

@@ -1894,6 +1894,11 @@ void CutterCore::continueDebug()
     emit debugTaskStateChanged();
     connect(debugTask.data(), &R2Task::finished, this, [this] () {
         QString ans = debugTask.data()->getResult();
+
+        if (!ans.isEmpty()) {
+            emit getIrqQemu(ans);
+        }
+
         debugTask.clear();
         syncAndSeekProgramCounter();
         emit registersChanged();

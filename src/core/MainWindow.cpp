@@ -74,6 +74,7 @@
 #include "widgets/CallGraph.h"
 
 #include "widgets/QRegWidget.h"
+#include "widgets/QIrqWidget.h"
 
 // Qt Headers
 #include <QApplication>
@@ -205,6 +206,9 @@ void MainWindow::initUI()
 
     connect(core, &CutterCore::requestDataToQPer,
             this->qregDock, &QRegWidget::getDataRequest);
+
+    connect(core, &CutterCore::getIrqQemu,
+            this->qirqDock, &QIrqWidget::getIrq);
 
     updateTasksIndicator();
     connect(core->getAsyncTaskManager(), &AsyncTaskManager::tasksChanged, this,
@@ -374,6 +378,7 @@ void MainWindow::initDocks()
     stringsDock = new StringsWidget(this);
 
     qregDock = new QRegWidget(this);
+    qirqDock = new QIrqWidget(this);
 
     QList<CutterDockWidget *> debugDocks = {
         stackDock = new StackWidget(this),
@@ -444,6 +449,7 @@ void MainWindow::initDocks()
 
     QList<CutterDockWidget *> windowDocks3 = {
         qregDock,
+        qirqDock,
     };
 
     ui->menuQEMU->addActions(makeActionList(windowDocks3));
@@ -869,6 +875,7 @@ void MainWindow::restoreDocks()
     tabifyDockWidget(dashboardDock, globalCallGraphDock);
 
     tabifyDockWidget(dashboardDock, qregDock);
+    tabifyDockWidget(dashboardDock, qirqDock);
 
 
     for (const auto &it : dockWidgets) {

@@ -716,6 +716,8 @@ signals:
 
     void needUpdateQPerReg();
 
+    void getIrqQemu(const QString &str);
+
 private:
     QString notes;
 
@@ -742,7 +744,7 @@ private:
     QSharedPointer<R2Task> debugTask;
     QVector<QSharedPointer<R2Task>> QReqTask;
     R2TaskDialog *debugTaskDialog;
-    
+
     QVector<QString> getCutterRCFilePaths() const;
 };
 
