@@ -2123,6 +2123,26 @@ void CutterCore::requestListPeripherals()
     task->startTask();
 }
 
+void CutterCore::setActiveSendIrq(bool checked)
+{
+    if (!currentlyDebugging) {
+        return;
+    }
+
+    QString request = "=!pkt";
+    request += checked ? " I" : " i";
+
+    if (!asyncCmdEsil(request, debugTask)) {
+        return;
+    }
+
+    connect(debugTask.data(), &R2Task::finished, this, [this] () {
+        debugTask.clear();
+    });
+
+    debugTask->startTask();
+}
+
 QStringList CutterCore::getDebugPlugins()
 {
     QStringList plugins;

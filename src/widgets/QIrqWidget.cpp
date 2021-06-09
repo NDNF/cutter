@@ -16,6 +16,8 @@ QIrqWidget::QIrqWidget(MainWindow *main) :
     ui->IrqTree->header()->setSectionResizeMode(1, QHeaderView::Interactive);
     ui->IrqTree->header()->setSectionResizeMode(2, QHeaderView::Interactive);
     ui->IrqTree->header()->setSectionResizeMode(3, QHeaderView::Interactive);
+
+    connect(ui->checkBox, &QCheckBox::clicked, Core(), &CutterCore::setActiveSendIrq);
 }
 
 QIrqWidget::~QIrqWidget()

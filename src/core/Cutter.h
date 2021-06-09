@@ -404,6 +404,8 @@ public:
     void requestPerReg(const QString str, QTreeWidgetItem *item);
     void requestListPeripherals();
 
+    void setActiveSendIrq(bool checked);
+
     void addBreakpoint(const BreakpointDescription &config);
     void updateBreakpoint(int index, const BreakpointDescription &config);
     void toggleBreakpoint(RVA addr);

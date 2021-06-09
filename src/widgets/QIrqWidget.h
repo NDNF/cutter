@@ -1,6 +1,7 @@
 #ifndef QIRQWIDGET_H
 #define QIRQWIDGET_H
 
+#include "core/Cutter.h"
 #include "CutterDockWidget.h"
 #include <QTreeWidgetItem>
 
